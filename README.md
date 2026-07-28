@@ -38,3 +38,17 @@ Penser aussi à :
 ## Note
 
 Le code source de l'app vit dans un autre dépôt : `brgkevin-arch/Kyroz-app`.
+
+## Régénérer l'image de partage (`og-image.png`)
+
+`og-image.png` est l'aperçu qui s'affiche quand le lien est partagé (WhatsApp,
+iMessage, X…). Il est fabriqué à partir de `og-image.svg`.
+
+Si tu modifies le SVG, relance ces deux commandes depuis ce dossier :
+
+```bash
+qlmanage -t -s 1200 -o . og-image.svg && sips -c 630 1200 og-image.svg.png --out og-image.png && rm og-image.svg.png
+```
+
+Le canevas du SVG est carré à dessein (l'outil macOS force une sortie carrée) ;
+le recadrage central le ramène au 1200x630 attendu par les réseaux sociaux.
