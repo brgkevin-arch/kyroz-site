@@ -10,7 +10,12 @@ Site vitrine statique de Kyroz. Une seule page, aucun build, aucune dépendance.
 |---|---|
 | `index.html` | La page. Tout est dedans (CSS inclus, logo en SVG inline). |
 | `legal.html` | Confidentialité + conditions d'utilisation. |
-| `kyroz-mark.svg` | Favicon (logo outline dark). |
+| `favicon.svg` | Icône d'onglet, couleur adaptative clair/sombre. |
+| `favicon.ico` | Icône de la barre d'adresse (16/32/48 px). **À la racine, obligatoire.** |
+| `favicon-32.png` | Repli PNG pour les vieux navigateurs. |
+| `apple-touch-icon.png` | Icône « ajouter à l'écran d'accueil » (180x180). |
+| `og-image.png` | Aperçu au partage du lien. |
+| `tools/make-favicon.py` | Regénère `favicon.ico` + `favicon-32.png`. |
 | `CNAME` | Dit à GitHub Pages de servir le site sur `kyroz.app`. **Ne pas supprimer.** |
 
 ## Publier une modification
@@ -52,3 +57,17 @@ qlmanage -t -s 1200 -o . og-image.svg && sips -c 630 1200 og-image.svg.png --out
 
 Le canevas du SVG est carré à dessein (l'outil macOS force une sortie carrée) ;
 le recadrage central le ramène au 1200x630 attendu par les réseaux sociaux.
+
+## Regénérer les favicons
+
+```bash
+python3 tools/make-favicon.py
+```
+
+Pas de dépendance à installer : le script dessine lui-même les polygones de la
+marque et écrit le PNG/ICO. Un convertisseur classique aurait aplati la
+transparence sur du blanc, ce qui remettrait un carré blanc autour du logo.
+
+⚠️ Les navigateurs mettent les favicons en cache très longtemps, bien au-delà des
+en-têtes HTTP. Si tu changes l'icône sans changer le nom du fichier, tu peux
+continuer à voir l'ancienne pendant des jours. Renomme le fichier pour forcer.
