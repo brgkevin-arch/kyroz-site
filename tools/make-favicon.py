@@ -139,6 +139,16 @@ def ico(images):
 
 
 if __name__ == "__main__":
+    # Les grandes tailles transparentes sont indispensables : sans elles, le
+    # navigateur retombe sur apple-touch-icon.png (fond noir plein) pour
+    # l'onglet, ce qui remet un carre autour du logo.
+    for s in (64, 128, 192):
+        SS_BACKUP = SS
+        globals()["SS"] = 3
+        open("/Users/kevinberger/Kyroz_Site/favicon-%d.png" % s, "wb").write(png(s, render(s)))
+        globals()["SS"] = SS_BACKUP
+        print("  favicon-%d.png ecrit" % s)
+
     imgs = []
     for s in (16, 32, 48):
         data = png(s, render(s))
