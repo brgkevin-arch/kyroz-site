@@ -1,29 +1,30 @@
 <!--
   Favicon (onglet du navigateur).
 
-  Deux partis pris, tous deux dictés par la taille réelle d'affichage (16 px) :
+  C'est la marque OUTLINE de la charte (kyroz_outline_dark.svg), marque seule :
+  le <rect> de fond du fichier d'origine est retiré, l'icône est transparente et
+  épouse la couleur de l'onglet.
 
-  1. FOND TRANSPARENT — plus de carré derrière la marque : l'icône épouse la
-     couleur de l'onglet, quelle qu'elle soit.
-  2. MARQUE PLEINE, pas en outline — à 16 px les traits fins du logo outline
-     se referment en une tache illisible. La version pleine tient la taille.
-     Le site, lui, garde bien la version outline.
+  ⚠️ Épaisseur de trait volontairement portée de 9 à 16 unités. À 9, le trait
+  vaut 0,4 px quand le navigateur affiche l'icône à 16 px : le contour se referme
+  et le K devient une tache. À 16, il reste lisible du favicon jusqu'au 64 px.
+  Ne pas revenir à l'épaisseur de la charte ici — elle est faite pour les grandes
+  tailles, où le site l'utilise déjà telle quelle.
 
-  La couleur suit le thème du navigateur : encre en clair, blanc en sombre.
-
-  ⚠️ La couleur par défaut est portée par l'ATTRIBUT `fill` du groupe, pas par le
-  CSS : certains moteurs de rendu simples ignorent le bloc <style> et, sans cet
+  ⚠️ La couleur par défaut est portée par l'ATTRIBUT `stroke` du groupe, pas par
+  le CSS : certains moteurs de rendu simples ignorent le bloc <style> et, sans cet
   attribut, dessinent une icône VIDE. Le CSS ne fait que surcharger en thème
   sombre — un attribut de présentation a la priorité la plus faible, donc le CSS
   gagne partout où il est compris. Ne pas déplacer cette couleur dans le <style>.
 -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="72 72 366 366">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="76 76 361 361">
   <style>
-    @media (prefers-color-scheme: dark) { .mark { fill: #ffffff; } }
+    @media (prefers-color-scheme: dark) { .mark { stroke: #ffffff; } }
   </style>
-  <g class="mark" fill="#0a0a0a" fill-rule="evenodd">
-    <path d="M428.58 82.30 L303.00 85.30 L82.67 306.38 L81.92 427.45 Z"/>
-    <path d="M236.07 337.96 L305.25 429.70 L430.08 429.70 L303.75 277.06 Z"/>
-    <path d="M185.69 82.30 L82.67 82.30 L81.92 240.96 L186.44 143.21 Z"/>
+  <g class="mark" fill="none" stroke="#0a0a0a" stroke-width="16"
+     stroke-linejoin="round" stroke-linecap="round">
+    <path d="M410.74 100.11 Q423.50 87.40 405.51 87.84 L319.61 89.89 Q301.62 90.32 288.91 103.07 L100.48 292.15 Q87.77 304.90 87.66 322.90 L87.15 404.41 Q87.04 422.41 99.80 409.71 Z"/>
+    <path d="M250.04 323.51 Q236.66 335.55 247.50 349.93 L292.97 410.22 Q303.81 424.60 321.81 424.60 L406.96 424.60 Q424.96 424.60 413.48 410.73 L313.82 290.30 Q302.35 276.44 288.97 288.48 Z"/>
+    <path d="M187.98 105.40 Q187.76 87.40 169.76 87.40 L105.77 87.40 Q87.77 87.40 87.68 105.40 L87.13 223.40 Q87.04 241.40 100.19 229.11 L175.34 158.82 Q188.49 146.52 188.27 128.52 Z"/>
   </g>
 </svg>

@@ -1,63 +1,115 @@
 #!/usr/bin/env python3
 """
-Fabrique favicon.ico (16/32/48 px) à partir de la marque Kyroz.
+Fabrique favicon.ico (16/32/48) + favicon-32.png depuis la marque Kyroz en
+version OUTLINE (celle de la charte), marque seule sur fond transparent.
 
-Pourquoi un rastériseur maison plutôt qu'un outil : les convertisseurs
-disponibles sur cette machine (qlmanage) aplatissent la transparence sur du
-blanc — ce qui aurait remis exactement le carré blanc qu'on cherche à retirer.
-Les trois formes de la marque sont des polygones à segments droits, donc on
-peut les remplir soi-même proprement, avec anti-crénelage par sur-échantillonnage.
+Deux choix techniques a connaitre avant de toucher a ce fichier :
+
+1. RASTERISEUR MAISON. Les convertisseurs presents sur la machine (qlmanage)
+   aplatissent la transparence sur du blanc, ce qui remettrait un carre blanc
+   autour du logo. On dessine donc nous-memes, sans dependance.
+
+2. EPAISSEUR DE TRAIT OPTIQUE. Le trait de la charte (9 unites sur 366) donne
+   0,4 px a 16 px : le contour se referme en une tache. L'epaisseur est donc
+   recalculee par taille pour valoir ~1,3 px a l'ecran.
 """
 import struct, zlib
 
-# Tracés de la marque (mêmes coordonnées que kyroz-mark.svg), viewBox 72 72 366 366
 VIEW = (72.0, 72.0, 366.0)
-POLYS = [
+SPAN = VIEW[2]
+SHAPES = [
     [(428.58, 82.30), (303.00, 85.30), (82.67, 306.38), (81.92, 427.45)],
     [(236.07, 337.96), (305.25, 429.70), (430.08, 429.70), (303.75, 277.06)],
     [(185.69, 82.30), (82.67, 82.30), (81.92, 240.96), (186.44, 143.21)],
 ]
-INK = (255, 255, 255)   # blanc : l'icône est destinée aux interfaces sombres
-SS = 4                  # sur-échantillonnage (4x4 = 16 échantillons par pixel)
+INK = (255, 255, 255)
+SS = 4
+STROKE_PX = 1.3
 
 
-def to_px(pt, size):
-    ox, oy, span = VIEW
-    return ((pt[0] - ox) / span * size, (pt[1] - oy) / span * size)
+def signed_area(poly):
+    s = 0.0
+    for i in range(len(poly)):
+        x1, y1 = poly[i]
+        x2, y2 = poly[(i + 1) % len(poly)]
+        s += x1 * y2 - x2 * y1
+    return s / 2.0
+
+
+def inset(poly, d):
+    sign = 1.0 if signed_area(poly) > 0 else -1.0
+    n = len(poly)
+    lines = []
+    for i in range(n):
+        x1, y1 = poly[i]
+        x2, y2 = poly[(i + 1) % n]
+        dx, dy = x2 - x1, y2 - y1
+        ln = (dx * dx + dy * dy) ** 0.5
+        if ln == 0:
+            return None
+        nx, ny = -dy / ln * sign, dx / ln * sign
+        lines.append((x1 + nx * d, y1 + ny * d, dx, dy))
+    out = []
+    for i in range(n):
+        px, py, dx, dy = lines[i - 1]
+        qx, qy, ex, ey = lines[i]
+        den = dx * ey - dy * ex
+        if abs(den) < 1e-9:
+            return None
+        t = ((qx - px) * ey - (qy - py) * ex) / den
+        out.append((px + dx * t, py + dy * t))
+    return out
 
 
 def inside(poly, x, y):
-    """Test point-dans-polygone par lancer de rayon."""
     hit = False
     n = len(poly)
     for i in range(n):
         x1, y1 = poly[i]
         x2, y2 = poly[(i + 1) % n]
         if (y1 > y) != (y2 > y):
-            xint = x1 + (y - y1) / (y2 - y1) * (x2 - x1)
-            if x < xint:
+            if x < x1 + (y - y1) / (y2 - y1) * (x2 - x1):
                 hit = not hit
     return hit
 
 
-def render(size):
-    polys = [[to_px(p, size) for p in poly] for poly in POLYS]
-    rows = []
-    step = 1.0 / SS
-    half = step / 2.0
+def coverage(size, stroke_px=STROKE_PX):
+    d_units = stroke_px / size * SPAN
+    ox, oy = VIEW[0], VIEW[1]
+
+    def to_px(poly):
+        return [((p[0] - ox) / SPAN * size, (p[1] - oy) / SPAN * size) for p in poly]
+
+    bands = []
+    for shape in SHAPES:
+        small = inset(shape, d_units)
+        bands.append((to_px(shape), to_px(small) if small else None))
+
+    step, rows = 1.0 / SS, []
     for py in range(size):
-        row = bytearray()
+        row = []
         for px in range(size):
-            covered = 0
+            c = 0
             for sy in range(SS):
-                y = py + half + sy * step
+                y = py + step / 2 + sy * step
                 for sx in range(SS):
-                    x = px + half + sx * step
-                    if any(inside(poly, x, y) for poly in polys):
-                        covered += 1
-            alpha = round(covered * 255 / (SS * SS))
-            row += bytes((INK[0], INK[1], INK[2], alpha))
-        rows.append(bytes(row))
+                    x = px + step / 2 + sx * step
+                    for outer, inner in bands:
+                        if inside(outer, x, y) and not (inner and inside(inner, x, y)):
+                            c += 1
+                            break
+            row.append(c / (SS * SS))
+        rows.append(row)
+    return rows
+
+
+def render(size):
+    rows = []
+    for row in coverage(size):
+        b = bytearray()
+        for a in row:
+            b += bytes((INK[0], INK[1], INK[2], round(a * 255)))
+        rows.append(bytes(b))
     return rows
 
 
@@ -75,32 +127,23 @@ def png(size, rows):
 
 
 def ico(images):
-    """Conteneur ICO à charges utiles PNG (supporté depuis Vista / tous navigateurs actuels)."""
     n = len(images)
-    header = struct.pack("<HHH", 0, 1, n)
+    out = struct.pack("<HHH", 0, 1, n)
     offset = 6 + 16 * n
-    entries, blobs = b"", b""
+    blobs = b""
     for size, data in images:
-        entries += struct.pack("<BBBBHHII", size if size < 256 else 0,
-                               size if size < 256 else 0, 0, 0, 1, 32,
-                               len(data), offset)
+        out += struct.pack("<BBBBHHII", size, size, 0, 0, 1, 32, len(data), offset)
         blobs += data
         offset += len(data)
-    return header + entries + blobs
+    return out + blobs
 
 
-imgs = []
-for s in (16, 32, 48):
-    data = png(s, render(s))
-    imgs.append((s, data))
-    print(f"  {s}x{s} : {len(data)} octets")
-
-out = ico(imgs)
-with open("/Users/kevinberger/Kyroz_Site/favicon.ico", "wb") as f:
-    f.write(out)
-print(f"favicon.ico : {len(out)} octets, {len(imgs)} tailles")
-
-# Un PNG 32px seul, utile comme icône de repli déclarée dans le HTML
-with open("/Users/kevinberger/Kyroz_Site/favicon-32.png", "wb") as f:
-    f.write(imgs[1][1])
-print("favicon-32.png écrit")
+if __name__ == "__main__":
+    imgs = []
+    for s in (16, 32, 48):
+        data = png(s, render(s))
+        imgs.append((s, data))
+        print("  %dx%d : trait %.1f unites, %d octets" % (s, s, STROKE_PX / s * SPAN, len(data)))
+    open("/Users/kevinberger/Kyroz_Site/favicon.ico", "wb").write(ico(imgs))
+    open("/Users/kevinberger/Kyroz_Site/favicon-32.png", "wb").write(imgs[1][1])
+    print("favicon.ico + favicon-32.png ecrits")

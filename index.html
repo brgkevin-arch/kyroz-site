@@ -10,9 +10,11 @@
   <!-- Icônes. favicon.ico à la RACINE est indispensable : les navigateurs le
        demandent d'office pour la barre d'adresse, l'historique et les favoris,
        sans lire ces balises. Sans lui, ils gardent l'ancienne icône en cache. -->
-  <link rel="icon" href="/favicon.ico" sizes="32x32" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="alternate icon" type="image/png" href="/favicon-32.png" />
+       Le ?v= force le rechargement : les navigateurs gardent les favicons bien
+       au-delà des en-têtes HTTP. Incrémenter à chaque changement d'icône. -->
+  <link rel="icon" href="/favicon.ico?v=3" sizes="32x32" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3" />
+  <link rel="alternate icon" type="image/png" href="/favicon-32.png?v=3" />
 
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <link rel="canonical" href="https://kyroz.app/" />
