@@ -184,8 +184,13 @@ if __name__ == "__main__":
         globals()["SS"] = SS_BACKUP
         print("  favicon-%d.png ecrit" % s)
 
+    # L'ICO ne contient QUE des petites tailles, donc uniquement la marque
+    # pleine. Raison : certains moteurs prennent la plus grande couche d'un ICO
+    # quelle que soit la taille demandee ; s'il y avait une couche 48 en
+    # contour, elle pourrait remonter dans l'onglet et y redevenir illisible.
+    # Les tailles >= 48 sont servies par les PNG dedies (favicon-64/128/192).
     imgs = []
-    for s in (16, 32, 48):
+    for s in (16, 32):
         data = png(s, render(s))
         imgs.append((s, data))
         print("  %dx%d : trait %.1f unites, %d octets" % (s, s, STROKE_PX / s * SPAN, len(data)))
