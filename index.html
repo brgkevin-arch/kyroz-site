@@ -18,15 +18,20 @@
     reprendre apple-touch-icon.png (180x180) pour l'onglet, or celle-là a un fond
     noir plein. Ne pas les retirer.
 
+    favicon.svg n'est VOLONTAIREMENT pas déclaré ici. Les navigateurs le
+    préfèrent à tout le reste et le rendent à la taille qu'ils veulent — or le
+    dessin doit changer selon la taille (plein sous 48 px, contour au-dessus).
+    Avec des PNG par taille, c'est nous qui décidons. Le fichier reste dans le
+    dépôt comme source vectorielle.
+
     Le ?v= force le rechargement — les navigateurs gardent les favicons bien
     au-delà des en-têtes HTTP. Incrémenter à chaque changement d'icône.
   -->
-  <link rel="icon" href="/favicon.ico?v=4" sizes="32x32" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=4" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=4" />
-  <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png?v=4" />
-  <link rel="icon" type="image/png" sizes="128x128" href="/favicon-128.png?v=4" />
-  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png?v=4" />
+  <link rel="icon" href="/favicon.ico?v=5" sizes="16x16 32x32 48x48" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=5" />
+  <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png?v=5" />
+  <link rel="icon" type="image/png" sizes="128x128" href="/favicon-128.png?v=5" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png?v=5" />
 
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <link rel="canonical" href="https://kyroz.app/" />

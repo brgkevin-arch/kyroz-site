@@ -9,7 +9,14 @@ Deux choix techniques a connaitre avant de toucher a ce fichier :
    aplatissent la transparence sur du blanc, ce qui remettrait un carre blanc
    autour du logo. On dessine donc nous-memes, sans dependance.
 
-2. EPAISSEUR DE TRAIT OPTIQUE. Le trait de la charte (9 unites sur 366) donne
+2. DESSIN VARIABLE SELON LA TAILLE. Sous 48 px on utilise la marque PLEINE,
+   au-dessus le CONTOUR de la charte. Raison mesuree, pas esthetique : le
+   contour ferme un trace qui longe les quatre bords de l'icone ; sous ~24 px
+   l'oeil ne lit plus le K mais un cadre avec quelque chose dedans. Ajouter une
+   marge ne corrige rien, c'est la nature du trace. C'est le meme principe que
+   l'optical sizing en typographie : le dessin s'adapte au corps.
+
+3. EPAISSEUR DE TRAIT OPTIQUE (pour les tailles en contour). Le trait de la charte (9 unites sur 366) donne
    0,4 px a 16 px : le contour se referme en une tache. L'epaisseur est donc
    recalculee par taille pour valoir ~1,3 px a l'ecran.
 """
@@ -103,9 +110,37 @@ def coverage(size, stroke_px=STROKE_PX):
     return rows
 
 
+def filled_coverage(size, margin=0.06):
+    """Marque PLEINE (sans contour), avec une petite marge.
+    Utilisee UNIQUEMENT sous 48 px : voir choix 3 en tete de fichier."""
+    ox, oy, span = VIEW
+    pad = size * margin
+    inner = size - 2 * pad
+    polys = [[((p[0]-ox)/span*inner+pad, (p[1]-oy)/span*inner+pad) for p in s]
+             for s in SHAPES]
+    step, out = 1.0/SS, []
+    for py in range(size):
+        row = []
+        for px in range(size):
+            c = 0
+            for sy in range(SS):
+                y = py + step/2 + sy*step
+                for sx in range(SS):
+                    x = px + step/2 + sx*step
+                    if any(inside(p, x, y) for p in polys):
+                        c += 1
+            row.append(c/(SS*SS))
+        out.append(row)
+    return out
+
+
+SEUIL_PLEIN = 48   # sous cette taille, on bascule sur la marque pleine
+
+
 def render(size):
+    cov = filled_coverage(size) if size < SEUIL_PLEIN else coverage(size)
     rows = []
-    for row in coverage(size):
+    for row in cov:
         b = bytearray()
         for a in row:
             b += bytes((INK[0], INK[1], INK[2], round(a * 255)))
