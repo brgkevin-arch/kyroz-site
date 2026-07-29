@@ -11,17 +11,19 @@
   Ne pas revenir à l'épaisseur de la charte ici — elle est faite pour les grandes
   tailles, où le site l'utilise déjà telle quelle.
 
-  ⚠️ La couleur par défaut est portée par l'ATTRIBUT `stroke` du groupe, pas par
-  le CSS : certains moteurs de rendu simples ignorent le bloc <style> et, sans cet
-  attribut, dessinent une icône VIDE. Le CSS ne fait que surcharger en thème
-  sombre — un attribut de présentation a la priorité la plus faible, donc le CSS
-  gagne partout où il est compris. Ne pas déplacer cette couleur dans le <style>.
+  ⚠️ La couleur par défaut (attribut `stroke` du groupe) est BLANCHE, et c'est le
+  thème CLAIR qui est traité en surcharge CSS. L'inverse paraît plus logique mais
+  il est faux ici : Chrome charge les favicons SVG hors contexte de page et
+  N'APPLIQUE PAS `prefers-color-scheme`. Il prend donc toujours la valeur par
+  défaut. Avec le noir par défaut, ça donnait un K noir sur une barre d'onglets
+  noire — invisible. Kyroz étant une marque sombre, le blanc est le bon repli.
+  Ne pas réinverser.
 -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="76 76 361 361">
   <style>
-    @media (prefers-color-scheme: dark) { .mark { stroke: #ffffff; } }
+    @media (prefers-color-scheme: light) { .mark { stroke: #0a0a0a; } }
   </style>
-  <g class="mark" fill="none" stroke="#0a0a0a" stroke-width="16"
+  <g class="mark" fill="none" stroke="#ffffff" stroke-width="16"
      stroke-linejoin="round" stroke-linecap="round">
     <path d="M410.74 100.11 Q423.50 87.40 405.51 87.84 L319.61 89.89 Q301.62 90.32 288.91 103.07 L100.48 292.15 Q87.77 304.90 87.66 322.90 L87.15 404.41 Q87.04 422.41 99.80 409.71 Z"/>
     <path d="M250.04 323.51 Q236.66 335.55 247.50 349.93 L292.97 410.22 Q303.81 424.60 321.81 424.60 L406.96 424.60 Q424.96 424.60 413.48 410.73 L313.82 290.30 Q302.35 276.44 288.97 288.48 Z"/>
