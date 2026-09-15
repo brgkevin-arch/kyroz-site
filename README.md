@@ -23,22 +23,32 @@ Site vitrine statique de Kyroz. Une seule page, aucun build, aucune dépendance.
 Modifier le fichier, puis dans GitHub Desktop : **Commit** → **Push**.
 Le site se met à jour tout seul en ~1 minute.
 
-## Le jour du lancement sur les stores
+## Les stores
 
-Dans `index.html`, chercher `store-badge`. Il y a deux blocs à changer :
+**App Store : en ligne depuis le 2026-09-12** — https://apps.apple.com/fr/app/kyroz/id6796427402.
+Le badge, le bouton « Télécharger » de la barre du haut (`nav-cta`) et les
+descriptions de partage le disent déjà.
+
+⚠️ Reste à faire côté Apple : remplacer l'icône maison du badge par le **visuel
+officiel** « Télécharger dans l'App Store » (leurs règles de marque l'imposent une
+fois l'app publiée).
+
+### Le jour du lancement sur Google Play
+
+Dans `index.html`, chercher `store-badge is-soon` — il ne reste que le badge Google Play :
 
 ```html
 <!-- AVANT (badge « bientôt », non cliquable) -->
 <span class="store-badge is-soon" role="link" aria-disabled="true" ...>
 
 <!-- APRÈS (badge cliquable) -->
-<a class="store-badge" href="https://apps.apple.com/app/idXXXXXXXXX">
+<a class="store-badge" href="https://play.google.com/store/apps/details?id=...">
 ```
 
 Penser aussi à :
-- remplacer `Bientôt sur` par `Télécharger sur` / `Disponible sur` dans les deux badges ;
-- remplacer les icônes maison par les **visuels officiels** Apple et Google (leurs règles de marque l'imposent une fois l'app publiée) ;
-- retirer le bandeau « Bientôt disponible » de la barre du haut (`nav-soon`) et le pastille « Bientôt sur iOS et Android » du hero.
+- remplacer `Bientôt sur` par `Disponible sur` dans le badge, et le visuel officiel Google ;
+- passer la pastille du hero (« Disponible sur iOS ») et la note sous les badges à iOS **et** Android ;
+- remettre « iOS et Android » dans les trois `description` du `<head>`.
 
 ## Note
 

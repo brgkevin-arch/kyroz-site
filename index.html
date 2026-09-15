@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google" content="notranslate" />
   <title>Kyroz — Ton plan nutrition. Automatique. Précis. Efficace.</title>
-  <meta name="description" content="Kyroz génère ton plan repas de la semaine, macro-précis, avec les recettes et la liste de courses. Tu exécutes. Tu progresses. Bientôt sur iOS et Android." />
+  <meta name="description" content="Kyroz génère ton plan repas de la semaine, macro-précis, avec les recettes et la liste de courses. Tu exécutes. Tu progresses. Disponible sur l'App Store." />
   <meta name="theme-color" content="#0a0a0a" />
   <!--
     Icônes.
@@ -43,14 +43,14 @@
   <meta property="og:locale" content="fr_FR" />
   <meta property="og:url" content="https://kyroz.app/" />
   <meta property="og:title" content="Kyroz — Ton plan nutrition. Automatique." />
-  <meta property="og:description" content="Plan repas de ta semaine, macro-précis, recettes et liste de courses. Bientôt sur iOS et Android." />
+  <meta property="og:description" content="Plan repas de ta semaine, macro-précis, recettes et liste de courses. Disponible sur l'App Store." />
   <meta property="og:image" content="https://kyroz.app/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Kyroz — ton plan nutrition, automatique." />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Kyroz — Ton plan nutrition. Automatique." />
-  <meta name="twitter:description" content="Plan repas de ta semaine, macro-précis, recettes et liste de courses. Bientôt sur iOS et Android." />
+  <meta name="twitter:description" content="Plan repas de ta semaine, macro-précis, recettes et liste de courses. Disponible sur l'App Store." />
   <meta name="twitter:image" content="https://kyroz.app/og-image.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -114,7 +114,7 @@
       letter-spacing: -0.04em;
     }
 
-    .nav-soon {
+    .nav-cta {
       font-size: 12px;
       font-weight: 600;
       letter-spacing: 0.08em;
@@ -123,7 +123,11 @@
       border: 1px solid var(--border-light);
       border-radius: 100px;
       padding: 7px 15px;
+      text-decoration: none;
+      transition: color 0.18s, border-color 0.18s;
     }
+
+    .nav-cta:hover { color: var(--white); border-color: rgba(255,255,255,0.32); }
 
     /* ── HERO ── */
     .hero {
@@ -404,7 +408,7 @@
     /* ── RESPONSIVE ── */
     @media (max-width: 820px) {
       .site-nav { padding: 14px 20px; }
-      .nav-soon { display: none; }
+      .nav-cta { display: none; }
 
       .hero { padding: 128px 20px 80px; }
       .hero-mark { width: 72px; height: 72px; margin-bottom: 32px; }
@@ -451,7 +455,7 @@
       <svg class="mark" aria-hidden="true"><use href="#kyroz-mark"/></svg>
       <span class="wordmark">Kyroz</span>
     </a>
-    <span class="nav-soon">Bientôt disponible</span>
+    <a class="nav-cta" href="https://apps.apple.com/fr/app/kyroz/id6796427402">Télécharger</a>
   </nav>
 
   <!-- HERO -->
@@ -460,7 +464,7 @@
 
     <div class="hero-badge">
       <span class="dot"></span>
-      Bientôt sur iOS et Android
+      Disponible sur iOS
     </div>
 
     <h1 class="hero-title">
@@ -477,20 +481,21 @@
 
     <!--
       BADGES STORES
-      Aujourd'hui : état « bientôt » (non cliquable).
-      Au lancement : remplacer <span class="store-badge is-soon"> par
-      <a class="store-badge" href="URL_DU_STORE"> et retirer aria-disabled.
+      App Store : en ligne depuis le 2026-09-12 (lien cliquable).
+      Google Play : état « bientôt » (non cliquable). Au lancement : remplacer
+      <span class="store-badge is-soon"> par <a class="store-badge" href="URL_DU_STORE">
+      et retirer aria-disabled.
     -->
     <div class="store-badges">
-      <span class="store-badge is-soon" role="link" aria-disabled="true" aria-label="Bientôt sur l'App Store">
+      <a class="store-badge" href="https://apps.apple.com/fr/app/kyroz/id6796427402" aria-label="Télécharger sur l'App Store">
         <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 14.25 3.51 5.31 9.05 5.03c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.36zM12.03 4.97C11.88 2.73 13.7.88 15.8.7c.29 2.58-2.34 4.5-3.77 4.27z"/>
         </svg>
         <span class="txt">
-          <small>Bientôt sur</small>
+          <small>Télécharger sur</small>
           <strong>App Store</strong>
         </span>
-      </span>
+      </a>
 
       <span class="store-badge is-soon" role="link" aria-disabled="true" aria-label="Bientôt sur Google Play">
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -506,7 +511,7 @@
       </span>
     </div>
 
-    <p class="hero-note">Sortie prochaine — iOS et Android.</p>
+    <p class="hero-note">Sur iPhone dès maintenant. Android arrive bientôt.</p>
   </main>
 
   <!-- COMMENT ÇA MARCHE -->
