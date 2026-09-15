@@ -15,6 +15,7 @@ Site vitrine statique de Kyroz. Une seule page, aucun build, aucune dépendance.
 | `favicon-32.png` | Repli PNG pour les vieux navigateurs. |
 | `apple-touch-icon.png` | Icône « ajouter à l'écran d'accueil » (180x180). |
 | `og-image.png` | Aperçu au partage du lien. |
+| `app-store-badge.svg` | Badge officiel « Télécharger dans l'App Store ». **Ne pas modifier.** |
 | `tools/make-favicon.py` | Regénère `favicon.ico` + `favicon-32.png`. |
 | `CNAME` | Dit à GitHub Pages de servir le site sur `kyroz.app`. **Ne pas supprimer.** |
 
@@ -29,9 +30,9 @@ Le site se met à jour tout seul en ~1 minute.
 Le badge, le bouton « Télécharger » de la barre du haut (`nav-cta`) et les
 descriptions de partage le disent déjà.
 
-⚠️ Reste à faire côté Apple : remplacer l'icône maison du badge par le **visuel
-officiel** « Télécharger dans l'App Store » (leurs règles de marque l'imposent une
-fois l'app publiée).
+Le badge est le **visuel officiel** d'Apple (`app-store-badge.svg`, version noire,
+en français), téléchargé depuis leur outil marketing le 2026-09-15. Leurs règles de
+marque interdisent de le redessiner ou de le recolorer : on change sa taille, rien d'autre.
 
 ### Le jour du lancement sur Google Play
 
