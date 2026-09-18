@@ -1,0 +1,9 @@
+# GitHub Pages construit le site avec Jekyll.
+# include : Jekyll ignore les dossiers en point — .well-known doit être servi (security.txt).
+# exclude : outils et doc du dépôt, inutiles sur le site public.
+include:
+  - .well-known
+exclude:
+  - README.md
+  - tools
+  - og-image.svg
